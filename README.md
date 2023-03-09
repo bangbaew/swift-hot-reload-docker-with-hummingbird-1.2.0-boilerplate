@@ -1,3 +1,7 @@
+# Swift Live Reload on Docker using Denon with Hummingbird installed
+## How
+I already made things simple, just double click on compose up.command (macOS), wait for pulling to complete, edit a *.swift file and press Ctrl+S, the program will reload automatically, see the effects on Docker container logs, you can customise your own denon configuration in scripts.json
+
 # Hummingbird
 
 Lightweight, flexible server framework written in Swift.
