@@ -1,0 +1,32 @@
+version: "3"
+
+volumes:
+  cache:
+  deno:
+  
+services:
+  dev: #&common
+    image: swift
+    volumes:
+      - .:/root/app
+      - cache:/root/.cache
+      - deno:/root/.deno
+    tmpfs:
+      - /root/app/.build:exec
+    working_dir: /root/app
+    tty: true
+    entrypoint: bash -c "if ! command -v deno &> /dev/null ; then apt update && apt install curl && curl -fsSL https://deno.land/x/install/install.sh | sh; fi && if ! command -v denon &> /dev/null ; then deno install -qAf --unstable https://deno.land/x/denon/denon.ts; fi && denon start"
+    ports:
+      - 4568:8080
+    environment:
+      - PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/root/.deno/bin
+
+  #integration-tests:
+  #  <<: *common
+  #  environment:
+  #    - MAX_ALLOCS_ALLOWED_1000_basicRoute=56000
+  #    - MAX_ALLOCS_ALLOWED_1000_bodyInRequestRoute=59000
+  #    - MAX_ALLOCS_ALLOWED_1000_bodyInResponseRoute=55000
+  #    - MAX_ALLOCS_ALLOWED_1000_coreBasicRoute=42000
+  #    - MAX_ALLOCS_ALLOWED_1000_largeBodyInRequest=112000
+  #  command: /bin/bash -xcl "./IntegrationTests/run-tests.sh $${INTEGRATION_TESTS_ARG-}"
